@@ -9,14 +9,14 @@ defineProps({
 });
 </script>
 <template >
-    <aside class="flex  flex-col bg-gray-800 shadow py-6 w-full sm:w-1/3 lg:w-1/4 lg:pl-4">
-        <Link :href="link.route" v-for="link in sideBarLinks" :key="link.name" class="flex sticky items-end pl-6 py-2" :class="route().current(link.route) ? 'text-white bg-gray-800 hover:bg-gray-500' : 'text-white hover:bg-gray-500 hover:text-white'">
-            <img :src="link.image" :alt="link.alt" class="h-8 w-8 rounded-full object-cover" v-if="link.image">
-            <icon :name="link.icon" class="fill-current w-8 h-8" v-if="link.icon"></icon>
-            <span class="ml-2">
-                {{ link.name }}
-            </span>
-        </Link>
+    <aside class="flex  flex-col bg-slate-900 shadow py-6 w-full sm:w-1/3 lg:w-1/4 lg:pl-4">
+            <Link :href="link.route" v-for="link in sideBarLinks" :key="link.name" class="text-lg  transform transition duration-500 hover:scale-125 flex sticky items-end ml-8 pl-6 py-2" :class="route().current(link.route) ? 'text-white bg-gray-800' : 'text-white  hover:text-cyan-500'">
+                <img :src="link.image" :alt="link.alt" class="h-8 w-8 rounded-full object-cover" v-if="link.image">
+                <icon :name="link.icon" class="fill-current w-8 h-8" v-if="link.icon"></icon>
+                <span class="ml-2">
+                    {{ link.name }}
+                </span>
+            </Link>
     </aside>
 </template>
 

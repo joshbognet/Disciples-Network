@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
-use Inertia\Inertia;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostFormRequest;
 
-class ProfileController extends Controller
+
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,28 +33,40 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\PostFormRequest  $request
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostFormRequest $request, Post $post)
     {
-        //
+        if((auth()->user()->id != $request->user_id) && (!auth()->user()->is_friends_with($request->user_id))) {
+            return back();
+        }
+        if((auth()->user()->id != $request->user_id) && (auth()->user()->is_friends_with($request->user_id))) {
+            auth()->user()->comments()->create([
+                'body' => $request->body,
+                'post_id' => $post->id,
+            ]);
+            return back();
+        }
+        if((auth()->user()->id = $request->user_id)) {
+            auth()->user()->comments()->create([
+                'body' => $request->body,
+                'post_id' => $post->id,
+            ]);
+            return back();
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  App\Models\User $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        return Inertia::render('User/Profile/Show',[
-            'profile'=> $user,
-            'isFriendsWith'=> auth()->user()->is_friends_with($user->id),
-            'friendRequestSentTo' => auth()->user()->has_pending_friend_request_sent_to($user->id),
-            'friendRequestRecievedFrom' => auth()->user()->has_pending_friend_request_from($user->id),
-        ]);
+        //
     }
 
     /**

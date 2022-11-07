@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Traits\Likeable;
+use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class PostLikeController extends Controller
 {
+    use Likeable;
     /**
      * Display a listing of the resource.
      *
@@ -33,36 +34,32 @@ class ProfileController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *  @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
-        //
+        return auth()->user()->like($post);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  App\Models\User $user
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Post $post)
     {
-        return Inertia::render('User/Profile/Show',[
-            'profile'=> $user,
-            'isFriendsWith'=> auth()->user()->is_friends_with($user->id),
-            'friendRequestSentTo' => auth()->user()->has_pending_friend_request_sent_to($user->id),
-            'friendRequestRecievedFrom' => auth()->user()->has_pending_friend_request_from($user->id),
-        ]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
         //
     }
@@ -71,10 +68,10 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
         //
     }
@@ -82,11 +79,11 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        return auth()->user()->dislike($post);
     }
 }

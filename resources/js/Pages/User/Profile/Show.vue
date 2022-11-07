@@ -4,9 +4,7 @@ import Status from '@/Components/FriendStatus/Status.vue';
    defineProps({
     profile:Object,
     Status:String,
-
 });
-
 </script>
 
 <template >
@@ -19,7 +17,7 @@ import Status from '@/Components/FriendStatus/Status.vue';
                     <span class="capitalize   ml-3 mb-5" >{{ `${profile.username}'s Profile` }}</span>
 
                 </h2>
-                <status :profile="profile"></status>
+                <Status :profile="profile" :isFriendsWith="isFriendsWith" :friendRequestSentTo="friendRequestSentTo" :friendRequestRecievedFrom="friendRequestRecievedFrom"></Status>
             </div>
         </template>
 
@@ -28,7 +26,12 @@ import Status from '@/Components/FriendStatus/Status.vue';
 
 <script>
      export default {
-        components:PagesLayout,
-        Status
+        props:['profile', 'isFriendsWith', 'friendRequestSentTo', 'friendRequestRecievedFrom'],
+        components:{
+            PagesLayout,
+            Status
+
+        }
+
     }
 </script>

@@ -8,11 +8,23 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 
+window.Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: false,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
 
 
 
-
-
+// Vue.filter('timeAgo', function(created){
+//     return moment(created).fromNow();
+// })
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -31,11 +43,13 @@ createInertiaApp({
 });
 
 InertiaProgress.init({ color: '#4B5563' });
+
 // new Vue({
 //     render: (h) =>
-//         h(createInertiaApp,{
-//             props: {
-//                 resolveComponent: (name) => require(`./Pages/${name}`).default,
-//             },
-//         }),
+//     h(InertiApp,{
+//         props: {
+//             initialPage: JSON.parse(app.dataset.page),
+//             resolveComponent: (name) => require(`.Pages/${name}`).default
+//         },
+//     }),
 // }).$mount(app);

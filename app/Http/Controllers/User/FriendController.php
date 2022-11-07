@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Traits\Friendable;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class FriendController extends Controller
 {
+    use Friendable;
     /**
      * Display a listing of the resource.
      *
@@ -31,13 +35,19 @@ class FriendController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User $user
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request,  User $user) {
+        if (!$user) {
+            return back()->withErrors(['message' => 'This user could not be found']);
+        }
+        auth()->user()->add_friend($user->id);
 
+        // event(new FriendRequestReceivedEvent($user));
+        return back();
+    }
     /**
      * Display the specified resource.
      *
@@ -64,22 +74,47 @@ class FriendController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        if (!$user) {
+            return back()->withErrors(['message' => 'This user could not be found']);
+        }
+
+        auth()->user()->accept_friend($user->id);
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( User $user)
     {
-        //
+        if (!$user) {
+            return back()->withErrors(['message' => 'This user could not be found']);
+        }
+        auth()->user()->delete_friend($user->id);
+        return back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function deny(User $user) {
+        if (!$user) {
+            return back()->withErrors(['message' => 'This user could not be found']);
+        }
+        auth()->user()->deny_friend($user->id);
+        return back();
+
     }
 }

@@ -7,6 +7,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import SideBar from '@/Components/SideBar.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import Icon from '@/Components/Icon.vue';
 
 defineProps({
     title: String,
@@ -32,8 +33,8 @@ const logout = () => {
 
         <Head :title="title" />
 
-        <div class="flex flex-col min-h-screen ">
-            <nav class="bg-white border-b border-gray-100 w-full z-20 fixed" >
+        <div class="flex  flex-col min-h-screen ">
+            <nav class="bg-white shadow border-b border-gray-100 w-full z-20 fixed" >
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -48,7 +49,8 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard.index')" :active="route().current('dashboard.index')">
-                                    Dashboard
+
+                                    <icon name="dashboard" class="w-8 h-8 text-cyan-900 border border-cyan-600 rounded-full p-1 hover:text-cyan-300 fill-current ml-1"></icon>
                                 </NavLink>
                             </div>
                         </div>
@@ -191,10 +193,16 @@ const logout = () => {
                 <side-bar></side-bar>
 
                 <!-- Page Content -->
-                <main class=" shadow rounded my-5 py-6 px-4 w-full sm:w-2/3 sm:mx-2 sm:my-3 md:mx-4 md:px-10 lg:mx-auto">
+                <main class=" border shadow-lg rounded my-5 py-6 px-4 w-full sm:w-2/3 sm:mx-2 sm:my-3 md:mx-4 md:px-10 lg:mx-auto">
                     <slot></slot>
                 </main>
             </div>
         </div>
 
 </template>
+
+<style>
+    body.swal2-toast-shown .swal2-container.swal2-top-end, body.swal2-toast-shown .swal2-container.swal2-top-right {
+        top: 40px;
+    }
+</style>

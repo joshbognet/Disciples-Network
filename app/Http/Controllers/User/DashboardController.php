@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Post;
+use App\Models\User;
 use Inertia\Inertia;
+use App\Traits\Friendable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
+    use Friendable;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard');
+        $combinedPosts = Post::allPosts()->latest()->paginate();
+        return Inertia::render('Dashboard', [
+           'combinedPosts' => $combinedPosts,
+           'suggestions' =>User::suggestions()->take(5)->inRandomOrder()->get(),
+        ]);
+
     }
 
     /**
